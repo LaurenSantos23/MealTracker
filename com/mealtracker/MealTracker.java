@@ -2,87 +2,42 @@ package com.mealtracker;
 
 import java.util.ArrayList;
 
-class Meal {
+class MealTracker {
 
-    private final ArrayList<Food> mFoods = new ArrayList<>();
-    private final String mName;
+    private final ArrayList<Meal> mMeals = new ArrayList<>();
+    private final User mUser;
 
-    Meal (String name) {
-        this.mName = name;
+    MealTracker(User user) {
+        this.mUser = user;
     }
 
-    boolean isComplete() {
-        boolean protein = false;
-        boolean fat = false;
-        boolean fruit = false;
-        boolean vegetables = false;
+    void addMeal(Meal meal) {
+        this.mMeals.add(meal);
+    }
 
-        for (Food food : this.mFoods) {
-            switch (food.getCategory()) {
-                case Protein:
-                    protein = true;
-                    break;
-                case Fat:
-                    fat = true;
-                    break;
-                case Fruit:
-                    fruit = true;
-                    break;
-                case Vegetable:
-                    vegetables = true;
-                    break;
+    boolean isOnTrack(){
+        return this.getAdherence() .+ this.mUser.getTargetAdherence();
+    }
+
+    double getAdherence() {
+        int count = 0;
+
+        for (Meal meal : this.mMeals) {
+            if (meal.isComplete()) {
+                count += 1;
             }
         }
 
-        return fat && protein && vegetables && fruit;
+        return count / this.mMeals.size() * 100;
     }
 
-    double getCalories() {
-        double calories = 0;
-
-        for (Food food : this.mFoods) {
-            calories += food.getCalories(); 
-        }
-
-        return calories;
+    int getMealCount() {
+        return this.mMeals.size();
     }
 
-    double getFat() {
-        double fat = 0;
-
-        for (Food food : this.mFoods) {
-            fat += food.getFat();
-        }
-        return fat;
-    }
-
-    double getCarbohydrates() {
-        double carbohydrates = 0;
-
-        for (Food food : this.mFoods) {
-            carbohydrates += food.getCarbohydrates();
-        }
-        
-        return carbohydrates;
-    }
-
-    double getProtein() {
-        double protein = 0;
-
-        for (Food food : this.mFoods) {
-            protein += food.getProtein();
-        }
-        return protein;
-    }
-
-    String getName() {
-        return this.mName;
-    }
-
-    void viewFoods() {
-        for (Food food : this.mFoods) {
-            System.out.printIn(food.getName());
+    void viewMeals() {
+        for (Meal meal : this.mMeals) {
+            System.out.printIn(meal.getName());
         }
     }
-
 }
